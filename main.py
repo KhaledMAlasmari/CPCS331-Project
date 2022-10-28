@@ -1,4 +1,5 @@
 from queue import PriorityQueue
+
 from typing import List
 from Cell import Cell
 
@@ -15,9 +16,12 @@ def main():
         ["X", ".", "S", ".", ".", "X", ".", "X", ".", ".", ".", "X", "X"],
         ["X", ".", ".", "X", ".", ".", ".", ".", "X", ".", ".", ".", "X"],
     ]
-    maze = Maze(maze_2d, (5,2), (2,9)) 
+    maze = Maze(maze_2d, (5,2), (2,9))
+    print("result with A*")
     print(a_star(maze))
-    dfs([], maze, maze.start)
+    #dfs([], maze, maze.start)
+    print("result with DFS")
+    print(newdfs(maze,maze.start))
     
     
 def a_star(maze: Maze):
@@ -63,7 +67,29 @@ def dfs(visted: List[Cell], maze: Maze, cell: Cell):
             if isFound:
                 return True
             
-            
+def newdfs(maze: Maze, cell: Cell):
+    stack = [cell] # initilize the stack with the first node (cell)
+    path = [] # initial the path the first node
+    closed = [] # initilize the closed list with empty
+    while stack: # while stack is not empty then continue the loop
+        currentCell = stack.pop()# pop the fist cell
+        path.append(currentCell.position) # add the position to the path, it might get removed later if we faced a dead end
+        if currentCell.x == maze.goal.x and currentCell.y == maze.goal.y: # if the currentCell position is the same as the goal one
+            # return our path
+            return path
+        else:
+            # get the current neighbors form get_neighbors_dfs that will not allow for new nodes from the current path to be added to avoid infinite loop
+            neighbors = Maze.get_neighbors_dfs(maze, currentCell.x, currentCell.y, maze.rows_length, maze.cols_length,path)
+            # add the new nodes to the stack
+            stack = stack + neighbors
+            # add the node to the closed list
+            closed.append(currentCell)
+            # if a node has no neighbors that mean we faced a dead end, then we should remove it from our path
+            if(neighbors == []):
+                path.pop()
+    # if we did not find the goal then just return an empty list instead of the path
+    return []
+
 if __name__ == "__main__":
     main()
 

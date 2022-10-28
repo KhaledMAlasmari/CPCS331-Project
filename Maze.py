@@ -34,5 +34,19 @@ class Maze:
         if y + 1 < cols and self.grid[x][y + 1] != "X":
             neighbors.append(Cell(x, y + 1, self.find_heu((x, y + 1), (self.goal.x, self.goal.y)), 0, self.find_g((x, y + 1), (self.start.x, self.start.y)), parent))
         return neighbors
-
+    def get_neighbors_dfs(self, x: int, y: int, rows: int, cols: int, path: list) -> list:
+        neighbors = []
+        if x - 1 >= 0 and self.grid[x - 1][y] != "X" and (x - 1,y) not in path:
+            neighbors.append(Cell(x - 1, y, self.find_heu((x, y - 1), (self.goal.x, self.goal.y)), 0,
+                                  self.find_g((x, y - 1), (self.start.x, self.start.y))))
+        if x + 1 < rows and self.grid[x + 1][y] != "X" and (x + 1,y) not in path:
+            neighbors.append(Cell(x + 1, y, self.find_heu((x + 1, y), (self.goal.x, self.goal.y)), 0,
+                                  self.find_g((x + 1, y), (self.start.x, self.start.y))))
+        if y - 1 >= 0 and self.grid[x][y - 1] != "X" and (x,y - 1) not in path:
+            neighbors.append(Cell(x, y - 1, self.find_heu((x, y - 1), (self.goal.x, self.goal.y)), 0,
+                                  self.find_g((x, y - 1), (self.start.x, self.start.y))))
+        if y + 1 < cols and self.grid[x][y + 1] != "X" and (x,y + 1) not in path:
+            neighbors.append(Cell(x, y + 1, self.find_heu((x, y + 1), (self.goal.x, self.goal.y)), 0,
+                                  self.find_g((x, y + 1), (self.start.x, self.start.y))))
+        return neighbors
         
