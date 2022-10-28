@@ -1,5 +1,4 @@
 from queue import PriorityQueue
-import string
 from typing import List
 from Cell import Cell
 
@@ -63,5 +62,8 @@ def dfs(visted: List[Cell], maze: Maze, cell: Cell):
             isFound = dfs(visted, maze, neighbor)
             if isFound:
                 return True
-main()
+            
+            
+if __name__ == "__main__":
+    main()
 
